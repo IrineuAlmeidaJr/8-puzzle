@@ -4,6 +4,10 @@ import Button from '@mui/material/Button'
 import TextField from "@mui/material/TextField";
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 import SendIcon from '@mui/icons-material/Send';
 
@@ -13,8 +17,8 @@ import { Puzzle } from "../components/Puzzle"
 export function Home() {
     const [listaNum, setListaNum] = useState(['2','8','3','6','5','4','7','1',' ']);
     const [estadoFinal, setEstadoFinal] = useState(['2','8','3','6','5','4','7','1',' ']);
+    const [algoritmo, setAlgoritmo] = useState('');
     const [novoEstado, setNovoEstado] = useState('');
-    const [gambiara, setGambiara] = useState([]);
 
     function procuraBranco() {
         let pos = 0;
@@ -32,31 +36,32 @@ export function Home() {
         let posBranco = 0;
         let sinal = 0;
         let posRandom = 0;
+                 
+        posBranco =  procuraBranco();
+        listaAux = listaNum;
+        // Pode: -3, -1, 1, 3            
+        sinal = Math.floor(Math.random() * 2); // 0 = negativo | 1 = positivo
+        posRandom = Math.floor(Math.random() * 2) * 2 + 1; // 1 ou 3
+        if(sinal) { // negativo 
+            posRandom *= -1;              
+        }
+        
+        posMover = posBranco + posRandom;         
+        if(posMover >= 0 && posMover < 9 && 
+            !(posMover == 2 && posBranco == 3) &&
+            !(posBranco == 2 && posMover == 3) &&
+            !(posMover == 5 && posBranco == 6) &&
+            !(posBranco == 6 && posMover == 5)) {                
+            listaAux[posBranco] = listaAux[posMover];
+            listaAux[posMover] = ' ';
+            setListaNum(listaAux.slice());
 
-        // while(i < 100)  {          
-            posBranco =  procuraBranco();
-            listaAux = listaNum;
-            // Pode: -3, -1, 1, 3            
-            sinal = Math.floor(Math.random() * 2); // 0 = negativo | 1 = positivo
-            posRandom = Math.floor(Math.random() * 2) * 2 + 1; // 1 ou 3
-            if(sinal) { // negativo 
-                posRandom *= -1;              
-            }
-            
-            posMover = posBranco + posRandom;         
-            if(posMover >= 0 && posMover < 9 && 
-                !(posMover == 2 && posBranco == 3) &&
-                !(posBranco == 2 && posMover == 3) &&
-                !(posMover == 5 && posBranco == 6) &&
-                !(posBranco == 6 && posMover == 5)) {
-                console.log(`posMover: ${posMover} | posBranco: ${posBranco}`)
-                listaAux[posBranco] = listaAux[posMover];
-                listaAux[posMover] = ' ';
-                setListaNum(listaAux);
-                
-                i++;               
-            }
-        // }
+            i++; 
+
+            console.log(`posMover: ${posMover} | posBranco: ${posBranco}`);
+            console.log(listaNum);   
+        }
+        
         
     }
 
@@ -82,12 +87,17 @@ export function Home() {
         }
     }
 
-    useEffect(() => {
-        console.log('Carregou')
-        setGambiara(['1', ' ', '3', '4', '5', '2', '6', '7', '8']);
+    function buscarSolucao() {
+        console.log(`Opção - ${algoritmo === 1 ? 'Busca em Profundidade' : 'A*'}`)
+    }
+
+    /*useEffect(() => {
+        console.log('Carregou');
+        setListaNum(['2','8','3','6','5','4','7','1',' ']);
+
         // setListaNum(['1', ' ', '3', '4', '5', '2', '6', '7', '8']);
         // setEstadoFinal(['2', ' ', '4', '3', '8', '1', '6', '7', '5']);
-    }, [gambiara]);
+    }, []);*/
 
     return (
         <div className="bg-blue-50 h-screen">
@@ -148,21 +158,12 @@ export function Home() {
                     flex-col 
                     items-center
                     mx-[25px]
-                    mt-3
                     "
                 >
-                    <Button 
-                    variant="contained"
-                    color="primary"
-                    onClick={randomList}
-                    fullWidth
-                    >
-                        Embaralhar
-                    </Button>
-
                     <Stack direction="row" spacing={2}>
                         <TextField 
-                        label={'Ex: 123045678'} 
+                        label={'Novo Estado'} 
+                        placeholder={'Ex: 123045678'}
                         id="margin-none"
                         fullWidth 
                         margin="normal"
@@ -171,13 +172,56 @@ export function Home() {
                         />
 
                         <IconButton 
+                        size="small"
                         color="primary"  
                         component="label"
                         onClick={gerarNovoEstado}
                         >
-                            <SendIcon />
+                            <SendIcon fontSize="small"  />
                         </IconButton>
                     </Stack>
+
+                    <Button 
+                    margin="normal"
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    onClick={()=>{randomList()}}
+                    fullWidth
+                    >
+                        Embaralhar
+                    </Button>
+
+                    <FormControl 
+                    sx={{ m: 1, minWidth: 120 }} 
+                    size="small" 
+                    fullWidth
+                    >
+                        <InputLabel id="demo-select-small">Algoritmo </InputLabel>
+                        <Select
+                        labelId="demo-select-small"
+                        value={algoritmo}
+                        label="Algoritmo"
+                        onChange={e => setAlgoritmo(e.target.value)}
+                        >
+                            <MenuItem value="">
+                            </MenuItem>
+                            <MenuItem value={1}>Busca em Profundiade</MenuItem>
+                            <MenuItem value={2}>A*</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <Button 
+                    margin="normal"
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    onClick={()=>{buscarSolucao()}}
+                    fullWidth
+                    >
+                        Buscar Solução
+                    </Button>
+
                 </div>
                 
             </aside>
