@@ -12,13 +12,16 @@ import Select from '@mui/material/Select';
 import SendIcon from '@mui/icons-material/Send';
 
 import { Puzzle } from "../components/Puzzle"
+import { Arvore } from "../components/Arvore";
 
 
 export function Home() {
-    const [listaNum, setListaNum] = useState(['2','8','3','6','5','4','7','1',' ']);
-    const [estadoFinal, setEstadoFinal] = useState(['2','8','3','6','5','4','7','1',' ']);
+    const [listaNum, setListaNum] = useState(["2","8","3","6","5","4","7","1"," "]);
+    const [estadoFinal, setEstadoFinal] = useState(["2","8","3","6","5","4"," ","7","1"]);
     const [algoritmo, setAlgoritmo] = useState('');
     const [novoEstado, setNovoEstado] = useState('');
+    const [retornoBusca, setRetornoBusca] = useState([]);
+
 
     function procuraBranco() {
         let pos = 0;
@@ -66,8 +69,9 @@ export function Home() {
     }
 
     function randomList() {
-        for(let i = 0; i < 20; i++) {
+        for(let i = 0; i < 2; i++) {
             setTimeout(() => randomList2(), 350 * i );
+            // randomList2();
         }
         
     }
@@ -85,22 +89,52 @@ export function Home() {
             setEstadoFinal(aux);
             setListaNum(aux.slice());
         }
+        //[1,4,7,2,5,8,3,6,0]
     }
 
     function buscarSolucao() {
-        console.log(`Opção - ${algoritmo === 1 ? 'Busca em Profundidade' : 'A*'}`)
+        const url = "http://localhost:8080/buscarsolucao";
+        fetch(url,{
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ tipoBusca: algoritmo, estados: listaNum, objetivo: estadoFinal })
+        })
+        .then(response => {
+            response.json().then(data => {
+                // Exibição teste, recebe um array já transformado
+                    const retorno = [];  
+                    data.forEach( valores => { 
+                        retorno.push(valores.puzzle.valores); 
+                    });
+
+                    setRetornoBusca(retorno);
+                    // console.log(retorno);                                        
+            })
+        }).catch(function(err) {
+            console.error('Failed retrieving information', err);
+        })
+        // console.log(`${JSON.stringify({ busca: algoritmo, estados: listaNum })}`)
+        // console.log(`Opção - ${algoritmo === 1 ? 'Busca em Profundidade' : 'A*'}`)
+        // console.log(listaNum); 
     }
 
-    /*useEffect(() => {
-        console.log('Carregou');
-        setListaNum(['2','8','3','6','5','4','7','1',' ']);
+    // useEffect(() => {
+    //     console.log('Carregou');
+    //     // setListaNum(['2','8','3','6','5','4','7','1',' ']);
 
-        // setListaNum(['1', ' ', '3', '4', '5', '2', '6', '7', '8']);
-        // setEstadoFinal(['2', ' ', '4', '3', '8', '1', '6', '7', '5']);
-    }, []);*/
+    //     let vetor = []
+    //     for (let i = 0; i < 20; i++) { 
+    //         vetor.push(listaNum)
+    //     }
+    //     setRetornoBusca(vetor)
+    //     // setListaNum(['1', ' ', '3', '4', '5', '2', '6', '7', '8']);
+    //     // setEstadoFinal(['2', ' ', '4', '3', '8', '1', '6', '7', '5']);
+    // }, []);
 
     return (
-        <div className="bg-blue-50 h-screen">
+        <div className="bg-blue-50 h-screen flex">
             <aside 
             className="
                 w-[250px]
@@ -225,6 +259,11 @@ export function Home() {
                 </div>
                 
             </aside>
+
+            <Arvore 
+                lista={retornoBusca}  
+            />
+            
             
         </div>
     )
