@@ -16,8 +16,8 @@ import { Arvore } from "../components/Arvore";
 
 
 export function Home() {
-    const [listaNum, setListaNum] = useState(["2","8","3","6","5","4","7","1"," "]);
-    const [estadoFinal, setEstadoFinal] = useState(["2","8","3","6","5","4"," ","7","1"]);
+    const [listaNum, setListaNum] = useState(["1","2","3"," ","5","6","4","7","8"]);
+    const [estadoFinal, setEstadoFinal] = useState(["1","2","3","4","5","6"," ","7","8"]);
     const [algoritmo, setAlgoritmo] = useState('');
     const [novoEstado, setNovoEstado] = useState('');
     const [retornoBusca, setRetornoBusca] = useState([]);
@@ -95,6 +95,7 @@ export function Home() {
     function buscarSolucao() {
         // Mudar URL para local
         const url = "https://app-8-puzzle.herokuapp.com/buscarsolucao";
+        // const url = "http://localhost:8080/buscarsolucao";
         fetch(url,{
             method: "POST",
             headers: {
@@ -244,7 +245,8 @@ export function Home() {
                             <MenuItem value="">
                             </MenuItem>
                             <MenuItem value={1}>Busca em Profundiade</MenuItem>
-                            <MenuItem value={2}>A*</MenuItem>
+                            <MenuItem value={2}>Busca em Largura</MenuItem>
+                            <MenuItem value={3}>A*</MenuItem>
                         </Select>
                     </FormControl>
 
