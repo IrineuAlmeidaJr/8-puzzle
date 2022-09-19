@@ -1,5 +1,6 @@
 
-export function Puzzle (props) {
+
+export function PuzzleShow (props) {
 
     return (              
         <div 
@@ -16,6 +17,31 @@ export function Puzzle (props) {
         >
             {
                 props.listaNum.map(num => (
+                    num === ' ' 
+                    ?
+                    <div 
+                    className="
+                        flex 
+                        flex-col 
+                        items-center 
+                        border-solid 
+                        border-4
+                        border-red-600 
+                        bg-gray-500"
+                    key={num}
+                    >
+                        <p 
+                        className="
+                            flex flex-1 
+                            items-center 
+                            font-bold 
+                            text-lg 
+                            text-white" 
+                        >
+                            {num}
+                        </p>
+                    </div>
+                    :
                     <div 
                     className="
                         flex 
@@ -38,6 +64,7 @@ export function Puzzle (props) {
                             {num}
                         </p>
                     </div>
+
                 ))
             }
 

@@ -93,6 +93,7 @@ export function Home() {
     }
 
     function buscarSolucao() {
+        // Mudar URL para local
         const url = "http://localhost:8080/buscarsolucao";
         fetch(url,{
             method: "POST",
@@ -120,26 +121,28 @@ export function Home() {
         // console.log(listaNum); 
     }
 
-    // useEffect(() => {
-    //     console.log('Carregou');
-    //     // setListaNum(['2','8','3','6','5','4','7','1',' ']);
+    /*useEffect(() => {
+        console.log('Carregou');
+        // setListaNum(['2','8','3','6','5','4','7','1',' ']);
 
-    //     let vetor = []
-    //     for (let i = 0; i < 20; i++) { 
-    //         vetor.push(listaNum)
-    //     }
-    //     setRetornoBusca(vetor)
-    //     // setListaNum(['1', ' ', '3', '4', '5', '2', '6', '7', '8']);
-    //     // setEstadoFinal(['2', ' ', '4', '3', '8', '1', '6', '7', '5']);
-    // }, []);
+        let vetor = []
+        for (let i = 0; i < 20; i++) { 
+            vetor.push(listaNum)
+        }
+        setRetornoBusca(vetor)
+        // setListaNum(['1', ' ', '3', '4', '5', '2', '6', '7', '8']);
+        // setEstadoFinal(['2', ' ', '4', '3', '8', '1', '6', '7', '5']);
+    }, []); */
 
     return (
-        <div className="bg-blue-50 h-screen flex">
+        <div className="bg-blue-50 flex h-screen">
             <aside 
             className="
-                w-[250px]
-                h-screen 
+                pb-4
+                w-[300px]
+                min-w-[220px]                
                 bg-gray-300 
+                overflow-auto
                 flex 
                 flex-col"
             >
@@ -227,7 +230,7 @@ export function Home() {
                     </Button>
 
                     <FormControl 
-                    sx={{ m: 1, minWidth: 120 }} 
+                    sx={{ m: 1, minWidth: 120}} 
                     size="small" 
                     fullWidth
                     >

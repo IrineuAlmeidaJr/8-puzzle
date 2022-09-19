@@ -1,4 +1,4 @@
-import { Puzzle } from "./Puzzle"
+import { PuzzleShow } from "../components/PuzzleShow";
 
 export function Arvore (props) {
 
@@ -16,7 +16,7 @@ export function Arvore (props) {
                                 <h2 className="my-2 p-1 text-lg font-bold text-center"> 
                                     Passo {numPasso} 
                                 </h2>
-                                <Puzzle 
+                                <PuzzleShow 
                                     listaNum={num}                
                                 />
                             </div>
