@@ -16,8 +16,10 @@ import { Arvore } from "../components/Arvore";
 
 
 export function Home() {
+    // const [listaNum, setListaNum] = useState(["1","2","3"," ","5","6","4","7","8"]);
+    // const [estadoFinal, setEstadoFinal] = useState(["1","2","3","4","5","6"," ","7","8"]);
     const [listaNum, setListaNum] = useState(["1","2","3"," ","5","6","4","7","8"]);
-    const [estadoFinal, setEstadoFinal] = useState(["1","2","3","4","5","6"," ","7","8"]);
+    const [estadoFinal, setEstadoFinal] = useState(["1","2","3"," ","5","6","4","7","8"]);
     const [algoritmo, setAlgoritmo] = useState('');
     const [novoEstado, setNovoEstado] = useState('');
     const [retornoBusca, setRetornoBusca] = useState([]);
@@ -61,16 +63,16 @@ export function Home() {
 
             i++; 
 
-            console.log(`posMover: ${posMover} | posBranco: ${posBranco}`);
-            console.log(listaNum);   
+            // console.log(`posMover: ${posMover} | posBranco: ${posBranco}`);
+            // console.log(listaNum);   
         }
         
         
     }
 
     function randomList() {
-        for(let i = 0; i < 2; i++) {
-            setTimeout(() => randomList2(), 350 * i );
+        for(let i = 0; i < 30; i++) {
+            setTimeout(() => randomList2(), 50 * i );
             // randomList2();
         }
         
@@ -107,7 +109,7 @@ export function Home() {
             response.json().then(data => {
                 // Exibição teste, recebe um array já transformado
                     const retorno = [];  
-                    data.forEach( valores => { 
+                    data.verticesSolucao.forEach( valores => { 
                         retorno.push(valores.puzzle.valores); 
                     });
 

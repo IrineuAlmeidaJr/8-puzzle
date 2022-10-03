@@ -14,7 +14,7 @@ export function Arvore (props) {
                             className="flex flex-col m-1 items-center"
                             >
                                 <h2 className="my-2 p-1 text-lg font-bold text-center"> 
-                                    {numPasso}º Visitado
+                                    {numPasso}º Passo
                                 </h2>
                                 <PuzzleShow 
                                     listaNum={num}                
