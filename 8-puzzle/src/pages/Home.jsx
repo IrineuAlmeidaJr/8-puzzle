@@ -13,6 +13,8 @@ import SendIcon from '@mui/icons-material/Send';
 
 import { Puzzle } from "../components/Puzzle"
 import { Arvore } from "../components/Arvore";
+import { ModalResultado } from "../components/ModalResultado";
+import { ModalResultadoFinal } from "../components/ModalResultadoFinal";
 
 
 export function Home() {
@@ -23,6 +25,12 @@ export function Home() {
     const [algoritmo, setAlgoritmo] = useState('');
     const [novoEstado, setNovoEstado] = useState('');
     const [retornoBusca, setRetornoBusca] = useState([]);
+
+    const [retornoBackend, setRetornoBackend] = useState('');
+    const [retornoBFS, setRetornoBFS] = useState('');
+    const [retornoA, setRetornoA] = useState('');
+
+    const [estadoModal, setEstadoModal] = useState(false);
 
 
     function procuraBranco() {
@@ -71,7 +79,7 @@ export function Home() {
     }
 
     function randomList() {
-        for(let i = 0; i < 30; i++) {
+        for(let i = 0; i < 20; i++) {
             setTimeout(() => randomList2(), 50 * i );
             // randomList2();
         }
@@ -111,17 +119,66 @@ export function Home() {
                     const retorno = [];  
                     data.verticesSolucao.forEach( valores => { 
                         retorno.push(valores.puzzle.valores); 
-                    });
-
-                    setRetornoBusca(retorno);
-                    // console.log(retorno);                                        
+                    });                 
+                    setRetornoBusca(retorno); 
+                    const aux = data;
+                    setRetornoBackend(aux);                                      
             })
-        }).catch(function(err) {
+        })
+        .then(() => setEstadoModal(true))
+        .catch(function(err) {
             console.error('Failed retrieving information', err);
         })
+
         // console.log(`${JSON.stringify({ busca: algoritmo, estados: listaNum })}`)
         // console.log(`Opção - ${algoritmo === 1 ? 'Busca em Profundidade' : 'A*'}`)
         // console.log(listaNum); 
+    }
+
+    function gerarRelatorioFinal() {
+        const url = "https://app-8-puzzle.herokuapp.com/buscarsolucao";
+        // const url = "http://localhost:8080/buscarsolucao";
+        //  Busca em Largura (BFS)
+        fetch(url,{
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ tipoBusca: 1, estados: listaNum, objetivo: estadoFinal })
+        })
+        .then(response => {
+            response.json().then(data => {                  
+                const aux = data;
+                setRetornoBFS(aux);                                      
+            })
+        })
+        .catch(function(err) {
+            console.error('Failed retrieving information', err);
+        })
+        // Busca A*
+        fetch(url,{
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ tipoBusca: 2, estados: listaNum, objetivo: estadoFinal })
+        })
+        .then(response => {
+            response.json().then(data => {                  
+                const retorno = [];  
+                    data.verticesSolucao.forEach( valores => { 
+                        retorno.push(valores.puzzle.valores); 
+                    });                 
+                    setRetornoBusca(retorno); 
+                    const aux = data;
+                    setRetornoA(aux);                                        
+            })
+        })
+        .then(() => setEstadoModal(true))
+        .catch(function(err) {
+            console.error('Failed retrieving information', err);
+        })
+        console.log("TESTE")
     }
 
     /*useEffect(() => {
@@ -178,71 +235,73 @@ export function Home() {
                         listaNum={estadoFinal}                
                     />
                     <p 
-                    className="
-                        w-[100%]
-                        mb-2 
-                        p-1 
-                        border-b-4 
-                        border-[#1876d2] 
-                        font-bold 
-                        text-center 
-                        text-[#1876d2]"
+                        className="
+                            w-[100%]
+                            mb-2 
+                            p-1 
+                            border-b-4 
+                            border-[#1876d2] 
+                            font-bold 
+                            text-center 
+                            text-[#1876d2]"
                     >
                         Objetivo
                     </p>
                 </div>
 
                 <div 
-                className="
-                    flex 
-                    flex-col 
-                    items-center
-                    mx-[25px]
+                    className="
+                        flex 
+                        flex-col 
+                        items-center
+                        mx-[25px]
                     "
                 >
                     <Stack direction="row" spacing={2}>
                         <TextField 
-                        label={'Novo Estado'} 
-                        placeholder={'Ex: 123045678'}
-                        id="margin-none"
-                        fullWidth 
-                        margin="normal"
-                        size="small"
-                        onChange={e => setNovoEstado(e.target.value)}
+                            sx={{ mt: 1 }}
+                            label={'Novo Estado'} 
+                            placeholder={'Ex: 123045678'}
+                            id="margin-none"
+                            fullWidth 
+                            margin="normal"
+                            size="small"
+                            onChange={e => setNovoEstado(e.target.value)}
                         />
 
                         <IconButton 
-                        size="small"
-                        color="primary"  
-                        component="label"
-                        onClick={gerarNovoEstado}
+                            size="small"
+                            color="primary"  
+                            component="label"
+                            onClick={gerarNovoEstado}
                         >
                             <SendIcon fontSize="small"  />
                         </IconButton>
                     </Stack>
 
                     <Button 
-                    margin="normal"
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    onClick={()=>{randomList()}}
-                    fullWidth
+                        x={{ mb: 1 }}
+                        margin="normal"
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={()=>{randomList()}}
+                        fullWidth
                     >
                         Embaralhar
                     </Button>
 
                     <FormControl 
-                    sx={{ m: 1, minWidth: 120}} 
-                    size="small" 
-                    fullWidth
+                        sx={{ mt: 2, mb: 1, minWidth: 120}} 
+                        size="small" 
+                        fullWidth
                     >
                         <InputLabel id="demo-select-small">Algoritmo </InputLabel>
                         <Select
-                        labelId="demo-select-small"
-                        value={algoritmo}
-                        label="Algoritmo"
-                        onChange={e => setAlgoritmo(e.target.value)}
+                            labelId="demo-select-small"
+                            value={algoritmo}
+                            label="Algoritmo"
+                            onChange={e => setAlgoritmo(e.target.value)}
                         >
                             <MenuItem value="">
                             </MenuItem>
@@ -253,14 +312,27 @@ export function Home() {
                     </FormControl>
 
                     <Button 
-                    margin="normal"
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    onClick={()=>{buscarSolucao()}}
-                    fullWidth
+                        sx={{ mb: 1 }}
+                        margin="normal"
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={buscarSolucao}
+                        fullWidth
                     >
                         Buscar Solução
+                    </Button>
+
+                    <Button 
+                        sx={{ mb: 1 }}
+                        margin="normal"
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={gerarRelatorioFinal}
+                        fullWidth
+                    >
+                        Relatório Geral
                     </Button>
 
                 </div>
@@ -271,7 +343,30 @@ export function Home() {
                 lista={retornoBusca}  
             />
             
+            {estadoModal && (
+                <ModalResultado 
+                    estado={estadoModal}
+                    setEstado={setEstadoModal}
+                    tipoBusca={retornoBackend.nomeMetodo}
+                    qtdeVisitado={retornoBackend.qtdePassos}
+                    qtdeSolucao={retornoBackend.caminhoSolucao}
+                    tempo={retornoBackend.tempo}
+                />
+            )} 
+
+            {estadoModal && !!retornoA && !!retornoBFS && (
+                <ModalResultadoFinal
+                    estado={estadoModal}
+                    setEstado={setEstadoModal}
+                    tipoBusca={"Final"}
+                    buscaBFS={retornoBFS}
+                    setBuscaBFS={setRetornoBFS}
+                    buscaA={retornoA}
+                    setBuscaA={setRetornoA}
+                />
+            )}
             
+
         </div>
     )
 }
