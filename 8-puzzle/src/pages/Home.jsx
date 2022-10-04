@@ -31,7 +31,7 @@ export function Home() {
     const [retornoA, setRetornoA] = useState('');
 
     const [estadoModal, setEstadoModal] = useState(false);
-
+    const [estadoModalFinal, setEstadoModalFinal] = useState(false);
 
     function procuraBranco() {
         let pos = 0;
@@ -79,7 +79,7 @@ export function Home() {
     }
 
     function randomList() {
-        for(let i = 0; i < 20; i++) {
+        for(let i = 0; i < 100; i++) {
             setTimeout(() => randomList2(), 50 * i );
             // randomList2();
         }
@@ -135,19 +135,19 @@ export function Home() {
         // console.log(listaNum); 
     }
 
-    function gerarRelatorioFinal() {
+    async function gerarRelatorioFinal() {
         const url = "https://app-8-puzzle.herokuapp.com/buscarsolucao";
         // const url = "http://localhost:8080/buscarsolucao";
         //  Busca em Largura (BFS)
-        fetch(url,{
+        await fetch(url,{
             method: "POST",
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({ tipoBusca: 1, estados: listaNum, objetivo: estadoFinal })
+            body: JSON.stringify({ tipoBusca: 2, estados: listaNum, objetivo: estadoFinal })
         })
         .then(response => {
-            response.json().then(data => {                  
+            response.json().then(data => {  
                 const aux = data;
                 setRetornoBFS(aux);                                      
             })
@@ -155,13 +155,14 @@ export function Home() {
         .catch(function(err) {
             console.error('Failed retrieving information', err);
         })
+        
         // Busca A*
-        fetch(url,{
+        await fetch(url,{
             method: "POST",
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({ tipoBusca: 2, estados: listaNum, objetivo: estadoFinal })
+            body: JSON.stringify({ tipoBusca: 3, estados: listaNum, objetivo: estadoFinal })
         })
         .then(response => {
             response.json().then(data => {                  
@@ -174,10 +175,11 @@ export function Home() {
                     setRetornoA(aux);                                        
             })
         })
-        .then(() => setEstadoModal(true))
+        .then(() => setEstadoModalFinal(true))
         .catch(function(err) {
             console.error('Failed retrieving information', err);
         })
+    
         console.log("TESTE")
     }
 
@@ -354,10 +356,10 @@ export function Home() {
                 />
             )} 
 
-            {estadoModal && !!retornoA && !!retornoBFS && (
+            {estadoModalFinal && !!retornoBFS && !!retornoBFS &&  (
                 <ModalResultadoFinal
-                    estado={estadoModal}
-                    setEstado={setEstadoModal}
+                    estado={estadoModalFinal}
+                    setEstado={setEstadoModalFinal}
                     tipoBusca={"Final"}
                     buscaBFS={retornoBFS}
                     setBuscaBFS={setRetornoBFS}

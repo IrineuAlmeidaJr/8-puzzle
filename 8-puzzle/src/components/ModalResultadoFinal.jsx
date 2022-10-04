@@ -46,7 +46,7 @@ export function ModalResultadoFinal(props) {
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                     <span className='font-bold'> A* </span> <br/>
                     Quantidade de passos (nós) visitados para obter a solução <span className='font-bold'>{props.buscaA.qtdePassos}</span> <br/>
-                    Tamanho do caminho da solução encontrada <span className='font-bold'>{props.buscaA.qtdeSolucao}</span> <br/>
+                    Tamanho do caminho da solução encontrada <span className='font-bold'>{props.buscaA.caminhoSolucao}</span> <br/>
                     Tempo gasto <span className='font-bold'>{props.buscaA.tempo}ms</span>
                 </Typography>
                 </Box>
