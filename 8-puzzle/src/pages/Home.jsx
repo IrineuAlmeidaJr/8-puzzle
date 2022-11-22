@@ -104,7 +104,7 @@ export function Home() {
 
     function buscarSolucao() {
         // Mudar URL para local
-        const url = "https://app-8-puzzle.herokuapp.com/buscarsolucao";
+        const url = "https://8-puzzle-back-production.up.railway.app/buscarsolucao";
         // const url = "http://localhost:8080/buscarsolucao";
         fetch(url,{
             method: "POST",
