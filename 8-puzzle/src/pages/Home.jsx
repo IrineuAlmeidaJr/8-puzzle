@@ -136,7 +136,7 @@ export function Home() {
     }
 
     async function gerarRelatorioFinal() {
-        const url = "https://app-8-puzzle.herokuapp.com/buscarsolucao";
+        const url = "https://8-puzzle-back-production.up.railway.app/buscarsolucao";
         // const url = "http://localhost:8080/buscarsolucao";
         //  Busca em Largura (BFS)
         await fetch(url,{
