@@ -3,14 +3,14 @@
 Aplicação desenvolvida com React JS.
 </p>
 
-‼️**OBS**: Frotend não está funcionado devido o Backend estava hospedado no Heroku gratuitamente e a plataforma passou a ser paga
+‼️**OBS**: Frotend não está funcionado devido o Backend estava hospedado no Heroku gratuitamente e a plataforma passou a ser paga </br>
+‼️**OBS**: se quiser instalar o backend e roda localmente, basta acessar o meu respositório [8-puzzle-back](https://github.com/IrineuAlmeidaJr/8-puzzle-back)
 
 <p align="center">
 <img src="http://img.shields.io/static/v1?label=STATUS&message=%20CONCLUIDO&color=GREEN&style=for-the-badge"/>
 </p>
 
 <h2 align="center"><a href="https://8-puzzle-front.vercel.app">Clique aqui para ver meu projeto!</a></h2>
- <strong>OBS1</strong>: devido o deploy realizado no heroku de forma gratuita, em alguns casos irá demorar para obter o resultado. Demora conectar na primeira tentativa</br>
  <strong>OBS2</strong>: BFS é um método de busca mais demorado, pode ser que solução não seja encontrada em um tempo hábil. 
 
 
